@@ -1,18 +1,13 @@
 import Head from "next/head";
 
-export const siteTitle = "Next.js Sample Website";
-
 export default function Layout({
   children,
-  home,
 }: {
   children: React.ReactNode;
-  home?: boolean;
 }) {
   return (
     <div id="fullsingle" className="page-template-page-fullsingle-split body">
       <Head>
-        <title>{siteTitle} {home ? "Swifty Yoga" : ""}</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="google-site-verification" content="5QIa0Qhd9IEI3orOHks9oDQVquchqFreqIJLlEFD51g" />
         <meta name="description" content="Berlin based passionate Yogi. Vegan foodie &amp; coffee hunter. Dog lover." />
@@ -30,11 +25,10 @@ export default function Layout({
         <meta name="twitter:creator" content="@swifty_yoga" />
         <link rel="icon" type="image/png" href="/images/favicon.png" sizes="32x32" />
         <link rel="stylesheet" href="/assets/css/split.css" type="text/css" media="screen" />
-        <style id="customStyle" />
-	      <script async src="https://cdn.jsdelivr.net/npm/contentful@latest/dist/contentful.browser.min.js"></script>
 	      <script async src="https://www.googletagmanager.com/gtag/js?id=UA-143058888-1"></script>
       </Head>
       {children}
+      <script async src="https://cdn.jsdelivr.net/npm/contentful@latest/dist/contentful.browser.min.js"></script>
     </div>
   );
 }
