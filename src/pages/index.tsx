@@ -62,18 +62,14 @@ const Index = ({ instaFeed, content }: Props) => {
                   </a>
                 </h1>
               </div>
-              <h2 className="heading">
-                {content.title}
-              </h2>
+              <h2 className="heading">{content.title}</h2>
               <div className="split-bio">
                 <ReactMarkdown
                   escapeHtml={false}
                   source={content.bio}
                 ></ReactMarkdown>
               </div>
-              <h3 className="heading">
-                Schedule
-              </h3>
+              <h3 className="heading">Schedule</h3>
               <div className="split-lists">
                 <div className="split-list" id="columnOne">
                   <ReactMarkdown
@@ -94,9 +90,7 @@ const Index = ({ instaFeed, content }: Props) => {
                   ></ReactMarkdown>
                 </div>
               </div>
-              <h3 className="heading">
-                Instagram
-              </h3>
+              <h3 className="heading">Instagram</h3>
               <div id="instagram">
                 {posts.map((post: { url: string; image: string }) => (
                   <a key={post.url} href={post.url} target="_blank">
@@ -123,11 +117,15 @@ const begrudginglyUseInstagramApi = async (): Promise<
   Array<{ image: string; url: string }>
 > => {
   const instagramApiSucks = await axios.get(
-    "https://www.instagram.com/graphql/query/?query_id=17888483320059182&variables=%7B%22id%22:%229383838398%22,%22first%22:20,%22after%22:null%7D"
+    encodeURI(
+      'https://www.instagram.com/graphql/query/?query_id=17888483320059182&variables={"id":"9383838398","first":20,"after":null}'
+    )
   );
+  console.log(instagramApiSucks.status);
+  console.log(instagramApiSucks.data);
   return instagramApiSucks.data.data.user.edge_owner_to_timeline_media.edges.map(
     (e: { node: { display_url: any; shortcode: any } }) => ({
-      image: e.node['thumbnail_resources'][4].src,
+      image: e.node["thumbnail_resources"][4].src,
       url: `https://www.instagram.com/p/${e.node.shortcode}/`,
     })
   );
