@@ -26,7 +26,7 @@ const Index = ({ instaFeed, content }: Props) => {
         <title>Swifty Yoga</title>
         <style>{content.css}</style>
       </Head>
-      <Layout home>
+      <Layout>
         <div className="fs-split">
           <div
             id="photo"
