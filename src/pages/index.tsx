@@ -32,6 +32,10 @@ const Index = ({ instaFeed, content }: Props) => {
           ></div>
           <div className="split-content">
             <div className="split-content-vertically-center">
+              <div className="navigation">
+                <a href="/">Home</a>
+                <a href="/schedule/">Schedule</a>
+              </div>
               <div className="split-intro">
                 <h1 className="my-name" id="name">
                   <span id="whoami">{content.whoami}</span>
@@ -74,12 +78,12 @@ const Index = ({ instaFeed, content }: Props) => {
                   </a>
                 ))}
               </div>
-              <div className="split-bio footer">
+              {/* <div className="split-bio footer">
                 <a href="/">Home</a>
                 <a href="/impressum.html">Impressum</a>
                 <a href="/agb.html">AGB</a>
                 <a href="/datenschutz.html">Datenschutz</a>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

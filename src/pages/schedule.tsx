@@ -1,40 +1,39 @@
-import axios from "axios";
 import { createClient } from "contentful";
 import { GetStaticPropsResult } from "next";
 import Head from "next/head";
-import React, { useState } from "react";
+import React from "react";
 import ReactMarkdown from "react-markdown";
 import Layout from "../components/layout";
 
 type Props = {
-  instaFeed: Array<{ image: string; url: string }>;
-  content: {
-    whoami: string;
-    title: string;
-    bio: string;
-    photo: string;
-  };
+  photo: string;
+  title: string;
+  description: string;
+  schedule: [];
 };
 
-const Index = ({ instaFeed, content }: Props) => {
-  const [posts] = useState(instaFeed);
+const Index = ({ photo, title, description, schedule }: Props) => {
   return (
     <>
       <Head>
-        <title>Swifty Yoga</title>
+        <title>Schedule - Swifty Yoga</title>
       </Head>
       <Layout>
         <div className="fs-split">
           <div
             id="photo"
             className="split-image"
-            style={{ backgroundImage: `url(https:${content.photo})` }}
+            style={{ backgroundImage: `url(https:${photo})` }}
           ></div>
           <div className="split-content">
             <div className="split-content-vertically-center">
+              <div className="navigation">
+                <a href="/">Home</a>
+                <a href="/schedule/">Schedule</a>
+              </div>
               <div className="split-intro">
                 <h1 className="my-name" id="name">
-                  <span id="whoami">{content.whoami}</span>
+                  <span id="whoami">Lisa Czerny</span>
                   <a
                     href="https://www.instagram.com/swiftyyoga/"
                     target="_blank"
@@ -59,26 +58,29 @@ const Index = ({ instaFeed, content }: Props) => {
                   </a>
                 </h1>
               </div>
-              <h2 className="heading">{content.title}</h2>
-              <div className="split-bio">
-                <ReactMarkdown
-                  escapeHtml={true}
-                  source={content.bio}
-                ></ReactMarkdown>
-              </div>
-              <h3 className="heading">Instagram</h3>
-              <div id="instagram">
-                {posts.map((post: { url: string; image: string }) => (
-                  <a key={post.url} href={post.url} target="_blank">
-                    <img src={post.image} alt="Instagram post" />
-                  </a>
+              <h2 className="heading">{title}</h2>
+              <ReactMarkdown
+                escapeHtml={true}
+                source={description}
+              ></ReactMarkdown>
+              <div className="schedule-items">
+                {schedule.map((item: { title: string; times: string[], location: { lat: number, lon: number }}) => (
+                  <div key={item.title} className="item">
+                    <h3>{item.title}</h3>
+                    <div className="times">
+                    {item.times.map(t => (
+                      <p key={t}>{t}</p>
+                    ))}
+                    </div>
+                    <div className="map">
+                      <iframe
+                        width="100%"
+                        height="250" style={{ border: 0 }}
+                        src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyDHr70QhxTZUiA9Z8vmTHdZOB7ksRYMbhY&q=${item.location.lat},${item.location.lon}&center=${item.location.lat},${item.location.lon}`}>
+                      </iframe>
+                    </div>
+                  </div>
                 ))}
-              </div>
-              <div className="split-bio footer">
-                <a href="/">Home</a>
-                <a href="/impressum.html">Impressum</a>
-                <a href="/agb.html">AGB</a>
-                <a href="/datenschutz.html">Datenschutz</a>
               </div>
             </div>
           </div>
@@ -89,45 +91,36 @@ const Index = ({ instaFeed, content }: Props) => {
   );
 };
 
-const begrudginglyUseInstagramApi = async (): Promise<
-  Array<{ image: string; url: string }>
-> => {
-  const instagramApiSucks = await axios.get(
-    encodeURI(
-      'https://www.instagram.com/graphql/query/?query_id=17888483320059182&variables={"id":"9383838398","first":8,"after":null}'
-    )
-  );
-  return instagramApiSucks.data.data.user.edge_owner_to_timeline_media.edges.map(
-    (e: { node: { display_url: any; shortcode: any } }) => ({
-      image: e.node["thumbnail_resources"][4].src,
-      url: `https://www.instagram.com/p/${e.node.shortcode}/`,
-    })
-  );
-};
+// 
+
+const getScheduleItem = (fields) => {
+  return {
+    title: fields["title"],
+    times: fields["times"],
+    location: fields["location"]
+  }
+}
 
 const getContentfulContent = async () => {
   const client = createClient({
     space: "jzsz7gl5og1r",
     accessToken: "86sDFMKyVACYsGWkeMaC_3tRIAeSaK3KKmdSXqoIgSo",
   });
-  const contentEntry = await client.getEntry("6iu8KUEIeRj87OMtRtJGIY");
-  const whoami = contentEntry.fields["name"];
-  const title = contentEntry.fields["title"];
-  const bio = contentEntry.fields["content"];
-  const photo = contentEntry.fields["photo"].fields.file.url;
+  const contentEntry = await client.getEntry("5vUoCSMq6ZHq5QkS9DH61D");
+  console.log(JSON.stringify(contentEntry));
   return {
-    whoami,
-    title,
-    bio,
-    photo,
+    photo: contentEntry.fields["photo"].fields.file.url,
+    title: contentEntry.fields["title"],
+    description: contentEntry.fields["description"],
+    schedule: contentEntry.fields["schedule"].map(s => getScheduleItem(s.fields))
   };
 };
 
 export const getStaticProps = async (): Promise<GetStaticPropsResult<Props>> => {
+  const content = await getContentfulContent();
   return {
     props: {
-      instaFeed: await begrudginglyUseInstagramApi(),
-      content: await getContentfulContent(),
+      ...content
     },
     revalidate: 1,
   };
