@@ -25,6 +25,7 @@ export default function Layout({
         <meta name="twitter:creator" content="@swifty_yoga" />
         <link rel="icon" type="image/png" href="/images/favicon.png" sizes="32x32" />
         <link rel="stylesheet" href="/assets/css/split.css" type="text/css" media="screen" />
+        <link rel="stylesheet" href="/assets/css/style.css" type="text/css" media="screen" />
 	      <script async src="https://www.googletagmanager.com/gtag/js?id=UA-143058888-1"></script>
       </Head>
       {children}

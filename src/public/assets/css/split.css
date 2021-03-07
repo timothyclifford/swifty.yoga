@@ -204,6 +204,7 @@ h3.heading {
   display: inline-block;
   margin-right: 15px;
   margin-bottom: 15px;
+  border-bottom:none;
 }
 #instagram a img {
   width: 250px;
@@ -333,6 +334,10 @@ h3.heading {
 .split-bio {
   padding: 40px 0 40px 0;
   font-family: 'Lora', serif;
+}
+
+.split-bio p {
+  margin-bottom:20px;
 }
 
 .split-bio.footer a {
