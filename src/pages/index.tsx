@@ -98,7 +98,7 @@ const begrudginglyUseInstagramApi = async (): Promise<
 > => {
   const instagramApiSucks = await axios.get(
     encodeURI(
-      'https://www.instagram.com/graphql/query/?query_id=17888483320059182&variables={"id":"9383838398","first":8,"after":null}'
+      'https://www.instagram.com/graphql/query/?query_id=17888483320059182&variables={"id":"9383838398","first":4,"after":null}'
     )
   );
   return instagramApiSucks.data.data.user.edge_owner_to_timeline_media.edges.map(
