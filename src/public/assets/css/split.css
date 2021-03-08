@@ -315,12 +315,14 @@ h3.heading {
 @media (max-width: 1200px) {
   .fs-split .split-content .split-content-vertically-center {
     padding: 60px;
+    width: 100%;
   }
 }
 
 @media (max-width: 800px) {
   .fs-split .split-content .split-content-vertically-center {
     padding: 30px;
+    width: 100%;
   }
 }
 
