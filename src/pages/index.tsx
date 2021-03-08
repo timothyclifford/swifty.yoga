@@ -35,6 +35,7 @@ const Index = ({ instaFeed, content }: Props) => {
               <div className="navigation">
                 <a href="/">Home</a>
                 <a href="/schedule/">Schedule</a>
+                <a href="https://forms.gle/4oMcDAyCxGD6Kwzq8" target="_blank">Register here</a>
               </div>
               <div className="split-intro">
                 <h1 className="my-name" id="name">
